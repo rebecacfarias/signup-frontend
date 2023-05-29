@@ -3,8 +3,8 @@ import { useContext } from "react"
 import { UserContext } from "../context/UserContext"
 
 function Dashboard(){
-    const { user, setUser } = useContext(UserContext)
-
+    const { user} = useContext(UserContext)
+    console.log(user)
     return(
             <Container maxWidth="sm">
                 <Box sx={{textAlign: 'center', mb: 6, mt: 6}}>
