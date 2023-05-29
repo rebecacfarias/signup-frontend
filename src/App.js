@@ -1,27 +1,21 @@
 import './App.css';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import SignUpPage from './pages/SignUpPage';
+import Dashboard from './pages/Dashboard';
+import { UserContext, UserProvider } from './context/UserContext';
+import { useContext } from 'react';
 
-import SignUpForm from './components/signup-form';
-import SignUpPage from './pages/signup-page';
-
-const useStyles = (theme => ({
-  page: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      width: '50%'
-  },
-  form: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent:'center'
-  }
-}))
 
 function App() {
+  const { user } = useContext(UserContext);
 
   return (
-    <SignUpPage/>
+      <Router>
+        <Routes>
+          <Route path='/' element={<SignUpPage />}  />
+          <Route path='/dashboard'element={user.firstName ? <Dashboard /> :  <Navigate to="/" />}  />
+        </Routes>
+      </Router>
   );
 }
 

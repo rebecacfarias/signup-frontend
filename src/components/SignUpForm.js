@@ -1,7 +1,10 @@
 import{ Button, TextField, Grid, Container, FormControl, Typography} from '@mui/material'
-import { ErrorMessage, Field, Form, Formik } from 'formik'
+import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
-import Label from './label'
+import { useNavigate } from 'react-router-dom'
+import Label from './Label'
+import { useContext, useEffect } from 'react'
+import { UserContext } from '../context/UserContext'
 
 /**
  * All fields except Job title are required
@@ -55,17 +58,23 @@ const initialValues = {
     password: ''
 }
 
-const saveUser = (values) => {
-    console.log(`hi ${values}`);
-};
-
-
 function SignUpForm(){
+    const navigate = useNavigate()
+    const { user, setUser } = useContext(UserContext)
+
+    const saveUser = (values) => {
+        setUser(values)
+        console.log(user)
+        navigate('/dashboard')
+    }
+
+
+    //TODO check email autocomplete with errors, check delay in displaying errors; Check console errors
     return(
         <Container maxWidth="sm" sx={{mb:6}}>
             <Formik initialValues={initialValues} 
                     validationSchema={validationSchema}
-                    onSubmit={values => saveUser(JSON.stringify(values))}>
+                    onSubmit={values => saveUser(values)}>
 
             {({ touched, errors, setFieldTouched, setFieldValue }) => (
                 <Form>
