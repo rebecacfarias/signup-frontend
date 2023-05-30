@@ -39,6 +39,7 @@ const initialValues = {
     password: ''
 }
 
+
 function SignUpForm(){
     const navigate = useNavigate()
     const { user, setUser } = useContext(UserContext)
@@ -47,12 +48,13 @@ function SignUpForm(){
     async function saveUser(values){
         setIsLoading(true)
         setUser(values)
-        try{
-            await api.post( '', JSON.stringify(user));
+        
+        await api.post( '', JSON.stringify(user))
+        .then((res) => {
+            console.log(res)
             navigate('/dashboard')
-        }catch(e){
-            alert("We're experiencing some issues, please try again")
-        }      
+        })
+        .catch((error)=> console.log(error))
     }
 
     return(
