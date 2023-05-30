@@ -7,13 +7,22 @@ import { createTheme, ThemeProvider} from '@mui/material';
 
 const theme = createTheme({
   typography: {
-    fontFamily: '"Work Sans", cursive', // Specify the font family you want to use
+    fontFamily: '"Work Sans", cursive', 
   },
   palette: {
     primary: {
       main: '#7747d8',
     },
   },
+  components:{
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          backgroundColor: '#222',
+        },
+      },
+    },
+  }
 })
 
 function App() {
@@ -21,7 +30,6 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-
       <Router>
         <Routes>
           <Route path='/' element={<SignUpPage />}  />

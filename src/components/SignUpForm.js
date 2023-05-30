@@ -1,12 +1,12 @@
-import{ Button, TextField, Grid, Container, FormControl, Typography} from '@mui/material'
+import{ Button, TextField, Grid, Container, FormControl, Typography, CircularProgress } from '@mui/material'
 import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useNavigate } from 'react-router-dom'
-import Label from './Label'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { UserContext } from '../context/UserContext'
 import * as messages from '../utils/ErrorMessages'
 import PasswordInput from './PasswordInput'
+import api from '../client/api'
 
 
 const validationSchema = Yup.object().shape({
@@ -42,15 +42,19 @@ const initialValues = {
 function SignUpForm(){
     const navigate = useNavigate()
     const { user, setUser } = useContext(UserContext)
+    const [ isLoading, setIsLoading ] = useState(false)
 
-    const saveUser = (values) => {
+    async function saveUser(values){
+        setIsLoading(true)
         setUser(values)
-        console.log(user)
-        navigate('/dashboard')
+        console.log(JSON.stringify(user))
+        await api.post( '', JSON.stringify(user))
+        .then( res => {
+            console.log(res)
+            navigate('/dashboard')
+        })
     }
 
-
-    //TODO check email autocomplete with errors, check delay in displaying errors; Check console errors
     return(
         <Container maxWidth="sm" sx={{mb:6}}>
             <Formik initialValues={initialValues} 
@@ -62,13 +66,13 @@ function SignUpForm(){
                         <Grid container justifyContent="center" alignItems="center" spacing = {2}>
                             <Grid item xs={12} sm={6}>
                                 <FormControl fullWidth>
-                                    <Label htmlFor="firstName" >First Name</Label>
+                                    <label htmlFor="firstName" ><Typography variant="body1" mb={2}>First Name</Typography></label>
                                     <Field component={TextField} name="firstName" type="text"  
                                     onChange={(e) => {
                                         setFieldValue('firstName', e.target.value);
                                         setFieldTouched('firstName', true);
                                     }}
-                                    error={touched.firstName && errors.firstName}
+                                    error={touched.firstName && !!errors.firstName}
                                     helperText={touched.firstName && errors.firstName}
                                     />
                                     </FormControl>
@@ -76,13 +80,13 @@ function SignUpForm(){
 
                             <Grid item xs={12} sm={6}>
                                 <FormControl fullWidth>
-                                    <Label variant="outlined" htmlFor="lastName"><Typography variant="body1">Last Name</Typography></Label>
+                                    <label htmlFor="lasttName" ><Typography variant="body1" mb={2}>Last Name</Typography></label>
                                     <Field component={TextField} name="lastName" type="text" 
                                     onChange={(e) => {
                                             setFieldValue('lastName', e.target.value);
                                             setFieldTouched('lastName', true) 
                                     }}
-                                    error={touched.lastName && errors.lastName}
+                                    error={touched.lastName && !!errors.lastName}
                                     helperText={touched.lastName && errors.lastName}
                                     />
                                     
@@ -91,13 +95,13 @@ function SignUpForm(){
 
                             <Grid item xs={12} >
                                 <FormControl fullWidth>
-                                    <Label htmlFor='company'>Company</Label>
+                                    <label htmlFor='company'><Typography variant="body1" mb={2}>Company</Typography></label>
                                     <Field component={TextField}  name="company" id="company" type="text"
                                     onChange={(e) => {
                                         setFieldValue('company', e.target.value);
                                         setFieldTouched('company', true) 
                                         }}
-                                        error={touched.company && errors.company}
+                                        error={touched.company && !!errors.company}
                                         helperText={touched.company && errors.company}
                                     />
                                 </FormControl>
@@ -105,13 +109,13 @@ function SignUpForm(){
 
                             <Grid item xs={12} >
                                 <FormControl fullWidth>
-                                    <Label htmlFor='jobTitle'>Job Title</Label>
+                                    <label htmlFor='jobTitle'><Typography variant="body1" mb={2}>Job Title</Typography></label>
                                     <Field component={TextField}  name="jobTitle" id="jobTitle" type="text" 
                                     onChange={(e) => {
                                         setFieldValue('jobTitle', e.target.value);
                                         setFieldTouched('jobTitle', true) 
                                     }}
-                                    error={touched.jobTitle && errors.jobTitle}
+                                    error={touched.jobTitle && !!errors.jobTitle}
                                     helperText={touched.jobTitle && errors.jobTitle}
                                     />
                                 </FormControl>
@@ -119,13 +123,13 @@ function SignUpForm(){
 
                             <Grid item xs={12} >
                                 <FormControl fullWidth>
-                                    <Label htmlFor="workEmail">Work Email</Label>
+                                    <label htmlFor="workEmail"><Typography variant="body1" mb={2}>Work Email</Typography></label>
                                     <Field component={TextField}  name="workEmail" type="email" 
                                     onChange={(e) => {
                                         setFieldValue('workEmail', e.target.value);
                                         setFieldTouched('workEmail', true) 
                                     }}
-                                    error={touched.workEmail && errors.workEmail}
+                                    error={touched.workEmail && !!errors.workEmail}
                                     helperText={touched.workEmail && errors.workEmail}
                                     />
                                 
@@ -134,7 +138,7 @@ function SignUpForm(){
 
                             <Grid item xs={12} >
                                 <FormControl fullWidth>
-                                    <Label htmlFor="password">Password</Label>
+                                    <label htmlFor="password"><Typography variant="body1" mb={2}>Password</Typography></label>
                                     <PasswordInput name="password"/>
                                 </FormControl>
                             </Grid>
@@ -145,6 +149,11 @@ function SignUpForm(){
                 </Form>
             )}
             </Formik>
+            {isLoading && 
+            <Grid container justifyContent="center" alignItems="center" spacing = {2} sx={{mt: 5}}>
+                <CircularProgress />
+            </Grid>
+            }
         </Container>
        
     )

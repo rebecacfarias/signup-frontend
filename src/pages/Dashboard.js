@@ -3,8 +3,8 @@ import { useContext } from "react"
 import { UserContext } from "../context/UserContext"
 
 function Dashboard(){
-    const { user} = useContext(UserContext)
-    console.log(user)
+    const { user } = useContext(UserContext)
+    
     return(
             <Container maxWidth="sm">
                 <Box sx={{textAlign: 'center', mb: 6, mt: 6}}>
@@ -14,7 +14,7 @@ function Dashboard(){
                     <Typography variant="subtitle1" gutterBottom>
                         We're preparing your dashboard
                     </Typography>
-                    <CircularProgress />
+                <CircularProgress />
                 </Box>
             </Container>
 

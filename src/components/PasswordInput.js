@@ -72,6 +72,7 @@ function PasswordInput({...props}) {
                   disablePortal: true,
                 }}
                 disableInteractive
+                placement="right"
                 arrow
               >
                 <Lock />
