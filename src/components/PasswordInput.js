@@ -47,7 +47,7 @@ function PasswordInput({...props}) {
           onChange={handleChange}
           onBlur={handleBlur}
           fullWidth
-          error={meta.touched && meta.error}
+          error={meta.touched && !!meta.error}
           helperText={meta.touched && meta.error}
 
           InputProps={{

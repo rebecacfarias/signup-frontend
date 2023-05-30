@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const url = API_URL
+const url = "https://signup-backend-production.up.railway.app/users/"
 
 const api = axios.create({
     baseURL: url,
