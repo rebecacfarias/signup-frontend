@@ -82,7 +82,7 @@ function SignUpForm(){
 
                             <Grid item xs={12} sm={6}>
                                 <FormControl fullWidth>
-                                    <label htmlFor="lasttName" ><Typography variant="body1" mb={2}>Last Name</Typography></label>
+                                    <label htmlFor="lastName" ><Typography variant="body1" mb={2}>Last Name</Typography></label>
                                     <Field component={TextField} name="lastName" type="text" 
                                     onChange={(e) => {
                                             setFieldValue('lastName', e.target.value);
