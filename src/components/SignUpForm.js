@@ -48,22 +48,22 @@ function SignUpForm(){
 
     async function saveUser(values){
         setIsLoading(true)
-        
-        console.log(values)
-        await api.post( '', JSON.stringify(values))
-        .then((res) => {
-            console.log(res)
-            setUser(res)
+        try{
+            const response = await api.post( '', JSON.stringify(values))
+            console.log(response)
+            setUser(response.data)
             navigate('/dashboard')
-        })
-        .catch((error)=> console.log(error))
+        }catch(error){
+            console.log(error)
+        }
+
     }
 
     return(
         <Container maxWidth="sm" sx={{mb:6}}>
             <Formik initialValues={initialValues} 
                     validationSchema={validationSchema}
-                    onSubmit={values => saveUser(values)}>
+                    onSubmit={values => {saveUser(values)}}>
 
             {({ touched, errors, setFieldTouched, setFieldValue, handleBlur }) => (
                 <Form>
