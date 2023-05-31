@@ -20,7 +20,8 @@ const validationSchema = Yup.object().shape({
                 .required(messages.ERROR_FIELD_REQUIRED('Company'))
                 .max(120, messages.ERROR_MAX_LENGTH),
     jobTitle: Yup.string()
-                .max(120, messages.ERROR_MAX_LENGTH),
+                .max(120, messages.ERROR_MAX_LENGTH)
+                .nullable(),
     workEmail: Yup.string()
                 .required(messages.ERROR_FIELD_REQUIRED('Work Email'))
                 .email(messages.ERROR_INVALID_EMAIL_FORMAT),
@@ -42,16 +43,17 @@ const initialValues = {
 
 function SignUpForm(){
     const navigate = useNavigate()
-    const { user, setUser } = useContext(UserContext)
+    const { setUser } = useContext(UserContext)
     const [ isLoading, setIsLoading ] = useState(false)
 
     async function saveUser(values){
         setIsLoading(true)
-        setUser(values)
         
-        await api.post( '', JSON.stringify(user))
+        console.log(values)
+        await api.post( '', JSON.stringify(values))
         .then((res) => {
             console.log(res)
+            setUser(res)
             navigate('/dashboard')
         })
         .catch((error)=> console.log(error))
