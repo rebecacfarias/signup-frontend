@@ -20,7 +20,8 @@ const validationSchema = Yup.object().shape({
                 .required(messages.ERROR_FIELD_REQUIRED('Company'))
                 .max(120, messages.ERROR_MAX_LENGTH),
     jobTitle: Yup.string()
-                .max(120, messages.ERROR_MAX_LENGTH),
+                .max(120, messages.ERROR_MAX_LENGTH)
+                .nullable(),
     workEmail: Yup.string()
                 .required(messages.ERROR_FIELD_REQUIRED('Work Email'))
                 .email(messages.ERROR_INVALID_EMAIL_FORMAT),
@@ -42,16 +43,17 @@ const initialValues = {
 
 function SignUpForm(){
     const navigate = useNavigate()
-    const { user, setUser } = useContext(UserContext)
+    const { setUser } = useContext(UserContext)
     const [ isLoading, setIsLoading ] = useState(false)
 
     async function saveUser(values){
         setIsLoading(true)
-        setUser(values)
         
-        await api.post( '', JSON.stringify(user))
+        console.log(values)
+        await api.post( '', JSON.stringify(values))
         .then((res) => {
             console.log(res)
+            setUser(res)
             navigate('/dashboard')
         })
         .catch((error)=> console.log(error))
@@ -82,7 +84,7 @@ function SignUpForm(){
 
                             <Grid item xs={12} sm={6}>
                                 <FormControl fullWidth>
-                                    <label htmlFor="lasttName" ><Typography variant="body1" mb={2}>Last Name</Typography></label>
+                                    <label htmlFor="lastName" ><Typography variant="body1" mb={2}>Last Name</Typography></label>
                                     <Field component={TextField} name="lastName" type="text" 
                                     onChange={(e) => {
                                             setFieldValue('lastName', e.target.value);
